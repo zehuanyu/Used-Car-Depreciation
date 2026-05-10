@@ -1,0 +1,7 @@
+{
+  "split": "time split at 2020-08-28",
+  "rows_used": 1500,
+  "train_rows": 1204,
+  "valid_rows": 296,
+  "best_model": "Random Forest"
+}

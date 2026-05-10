@@ -1,0 +1,104 @@
+﻿column,dtype,missing_rate,nunique,examples
+fleet_unknown,bool,0.0,1,False
+frame_damaged_unknown,bool,0.0,1,False
+has_accidents_unknown,bool,0.0,1,False
+disp_missing,bool,0.0,2,False; True
+etype_missing,bool,0.0,2,False; True
+fleet,boolean,0.0,2,False; True
+frame_damaged,boolean,0.0,2,False; True
+has_accidents,boolean,0.0,2,False; True
+listing_color,category,0.0,15,YELLOW; BLACK; UNKNOWN
+engine_type_std,category,0.0,34,I4; H4; V6
+make_name,category,0.0,66,Jeep; Land Rover; Subaru
+model_name,category,0.0,1111,Renegade; Discovery Sport; WRX STI
+body_type,category,0.0011288045288858027,9,SUV / Crossover; Sedan; Coupe
+transmission,category,0.013017251794189036,5,A; M; CVT
+fuel_type,category,0.015971668836818796,7,Gasoline; Diesel; Biodiesel
+engine_type,category,0.020380718310185723,34,I4; H4; V6
+trim_name,category,0.02539993239376119,7168,Latitude FWD; S AWD; Base
+wheel_system,category,0.03039596022214873,6,FWD; AWD; RWD
+interior_color,category,0.12199753249431632,17649,Black; Black (Ebony); Gray (Ebony/Ebony/Ebony)
+vehicle_damage_category,category,0.9999987796707795,1,FWD
+listed_date,datetime64[ns],0.0,1328,2019-04-06 00:00:00; 2020-02-15 00:00:00; 2017-04-25 00:00:00
+engine_disp_l,float32,0.0,85,1.3; 2.0; 2.5
+age_years,float32,1.2203292204170842e-06,41,0.0; 1.0; 2.0
+cylinders_num,float32,0.020380718310185723,8,4.0; 6.0; 8.0
+price,float64,0.0,63708,23141.0; 46500.0; 46995.0
+year,float64,1.2203292204170842e-06,45,2019.0; 2020.0; 2016.0
+mileage,float64,0.004178407250708096,152030,7.0; 8.0; 11.0
+engine_displacement,float64,0.03656350410213668,66,1300.0; 2000.0; 2500.0
+horsepower,float64,0.03656350410213668,433,177.0; 246.0; 305.0
+owner_count,float64,0.35680839977009,17,3.0; 2.0; 1.0
+unnamed: 55,float64,1.0,0,
+unnamed: 61,float64,1.0,0,
+unnamed: 72,float64,1.0,0,
+unnamed: 74,float64,1.0,0,
+unnamed: 76,float64,1.0,0,
+unnamed: 77,float64,1.0,0,
+unnamed: 78,float64,1.0,0,
+unnamed: 80,float64,1.0,0,
+unnamed: 82,float64,1.0,0,
+unnamed: 88,float64,1.0,0,
+unnamed: 93,float64,1.0,0,
+daysonmarket,int64,0.0,1313,522; 207; 1233
+engine_cylinders,object,0.020380718310185723,34,I4; H4; V6
+unnamed: 23,object,1.0,0,
+unnamed: 24,object,1.0,0,
+unnamed: 25,object,1.0,0,
+unnamed: 26,object,1.0,0,
+unnamed: 27,object,1.0,0,
+unnamed: 28,object,1.0,0,
+unnamed: 29,object,1.0,0,
+unnamed: 30,object,1.0,0,
+unnamed: 31,object,1.0,0,
+unnamed: 32,object,1.0,0,
+unnamed: 33,object,1.0,0,
+unnamed: 34,object,1.0,0,
+unnamed: 35,object,1.0,0,
+unnamed: 36,object,1.0,0,
+unnamed: 37,object,1.0,0,
+unnamed: 38,object,1.0,0,
+unnamed: 39,object,1.0,0,
+unnamed: 40,object,1.0,0,
+unnamed: 41,object,1.0,0,
+unnamed: 42,object,1.0,0,
+unnamed: 43,object,1.0,0,
+unnamed: 44,object,1.0,0,
+unnamed: 45,object,1.0,0,
+unnamed: 46,object,1.0,0,
+unnamed: 47,object,1.0,0,
+unnamed: 48,object,1.0,0,
+unnamed: 49,object,1.0,0,
+unnamed: 50,object,1.0,0,
+unnamed: 51,object,1.0,0,
+unnamed: 52,object,1.0,0,
+unnamed: 53,object,1.0,0,
+unnamed: 54,object,1.0,0,
+unnamed: 56,object,1.0,0,
+unnamed: 57,object,1.0,0,
+unnamed: 58,object,1.0,0,
+unnamed: 59,object,1.0,0,
+unnamed: 60,object,1.0,0,
+unnamed: 62,object,1.0,0,
+unnamed: 63,object,1.0,0,
+unnamed: 64,object,1.0,0,
+unnamed: 65,object,1.0,0,
+unnamed: 66,object,1.0,0,
+unnamed: 67,object,1.0,0,
+unnamed: 68,object,1.0,0,
+unnamed: 69,object,1.0,0,
+unnamed: 70,object,1.0,0,
+unnamed: 71,object,1.0,0,
+unnamed: 73,object,1.0,0,
+unnamed: 75,object,1.0,0,
+unnamed: 79,object,1.0,0,
+unnamed: 81,object,1.0,0,
+unnamed: 83,object,1.0,0,
+unnamed: 84,object,1.0,0,
+unnamed: 85,object,1.0,0,
+unnamed: 86,object,1.0,0,
+unnamed: 87,object,1.0,0,
+unnamed: 89,object,1.0,0,
+unnamed: 90,object,1.0,0,
+unnamed: 91,object,1.0,0,
+unnamed: 92,object,1.0,0,
