@@ -1,208 +1,252 @@
 # Used Car Depreciation
 
-An end-to-end data project that analyzes how used vehicles lose value over time and builds a machine learning workflow to estimate resale price from listing-level attributes.
+A Python machine learning project for analyzing used-car depreciation patterns and estimating resale prices from listing-level vehicle attributes.
 
-## Project Summary
+This project focuses on building a practical valuation workflow: cleaning messy used-car listing data, engineering depreciation-related features, training predictive models, benchmarking performance, analyzing model errors by segment, and packaging the result into a Streamlit app.
 
-Used-car pricing is noisy, inconsistent, and highly sensitive to mileage, age, and vehicle configuration. This project was built to answer a practical valuation question:
+---
 
-**Can we estimate a fair used-car price from listing attributes while also understanding the main drivers of depreciation?**
+## Overview
 
-The final repository is organized as a reproducible and shareable data project rather than a single experimental notebook. It includes:
+Used-car prices are affected by many interacting factors, including age, mileage, make, model, trim, body type, fuel type, transmission, accident history, and market timing.
 
-- data cleaning and preprocessing
-- exploratory data analysis
-- feature engineering
-- predictive modeling
-- benchmark comparison
-- segment-level error analysis
-- a Streamlit app for interactive valuation
+This project was built to answer a practical question:
 
-## Problem Statement
+> Can we estimate a fair used-car resale price while also understanding the major drivers of depreciation?
 
-In the used-car market, prices vary widely even within the same make and model. A useful pricing project should do more than output a prediction. It should also help explain:
+The final workflow includes:
 
-- which variables matter most
-- whether the model generalizes beyond a single split
-- which vehicle segments are harder to predict
-- how a predicted value compares with a listing's asking price
+- Data cleaning and preprocessing
+- Exploratory data analysis
+- Feature engineering
+- LightGBM-based price modeling
+- Benchmark comparison against baseline models
+- Segment-level error analysis
+- Interactive Streamlit valuation app
 
-This project was designed with those goals in mind.
+---
 
-## Dataset and Data Preparation
+## Project Workflow
 
-The project uses used-vehicle listing data with fields such as:
+```text
+Raw vehicle listings
+        ↓
+Data cleaning and preprocessing
+        ↓
+Feature engineering
+        ↓
+Exploratory data analysis
+        ↓
+Model training and benchmarking
+        ↓
+Error analysis by market segment
+        ↓
+Streamlit valuation app
+```
 
-- price
-- year
-- listed date
-- mileage
-- make and model
-- trim
-- body type
-- fuel type
-- transmission
-- wheel system
-- engine characteristics
-- accident and fleet indicators
+---
 
-Because raw listing data is messy, the preparation step was a major part of the project. The cleaning workflow:
+## Key Features
 
-- standardized column names
-- converted mixed-type numeric fields into usable numeric columns
-- normalized boolean fields such as accident and fleet history
-- converted engine displacement into a consistent liter-based feature
-- derived vehicle age from listing date and model year
-- handled missing and inconsistent categorical values
-- created a project structure with raw, processed, sample, model, and results layers
+- Cleans and standardizes structured used-car listing data
+- Derives depreciation-focused features such as vehicle age, mileage transforms, and engine displacement
+- Trains a LightGBM regression model for price prediction
+- Benchmarks model performance against simpler baselines
+- Evaluates prediction error by make, body type, age band, mileage band, and price band
+- Includes a Streamlit app for interactive vehicle price estimation
+- Provides reusable scripts for cleaning, training, scoring, benchmarking, and error analysis
 
-The cleaning logic lives in [scripts/clean_cars.py](C:/Users/Joyce/Desktop/study/used-car-depreciation-github-ready/scripts/clean_cars.py).
+---
 
-## Exploratory Analysis
+## Dataset
 
-Before modeling, I used EDA to validate whether the data behaved in economically reasonable ways. The exploratory analysis focused on:
+The project uses used-vehicle listing data with features such as:
 
-- price distribution across the market
-- price vs. mileage
-- price vs. vehicle age
-- body type differences
-- brand frequency
-- monthly price trends
+- Price
+- Model year
+- Listing date
+- Mileage
+- Make and model
+- Trim
+- Body type
+- Fuel type
+- Transmission
+- Wheel system
+- Engine characteristics
+- Accident and fleet history indicators
 
-These plots helped confirm that depreciation patterns were present and also informed feature engineering choices. The generated figures are in [reports/figures](C:/Users/Joyce/Desktop/study/used-car-depreciation-github-ready/reports/figures).
+The repository includes sample data and lightweight artifacts for demonstration. The full original raw dataset is not included.
 
-## Feature Engineering
+---
 
-Several engineered features were added to make the model more useful on structured vehicle data:
+## Methodology
+
+### 1. Data Cleaning
+
+The cleaning pipeline prepares raw listing data for modeling by:
+
+- Standardizing column names
+- Converting mixed-type numeric fields
+- Normalizing boolean fields such as accident and fleet history
+- Converting engine displacement into liter-based values
+- Deriving vehicle age from listing date and model year
+- Handling missing or inconsistent categorical values
+- Creating processed and sample datasets for reproducible analysis
+
+Main script:
+
+```text
+scripts/clean_cars.py
+```
+
+---
+
+### 2. Exploratory Data Analysis
+
+EDA was used to validate whether the data followed realistic market behavior.
+
+The analysis focuses on:
+
+- Price distribution
+- Price vs. mileage
+- Price vs. vehicle age
+- Brand and body-type patterns
+- Monthly price trends
+- Depreciation behavior across vehicle segments
+
+Generated figures are stored in:
+
+```text
+reports/figures/
+```
+
+---
+
+### 3. Feature Engineering
+
+The model uses both raw listing attributes and engineered features, including:
 
 - `age_years`
 - `age_sq`
 - `log_mileage`
 - `engine_disp_l`
 - `hp_per_l`
-- standardized engine type labels
-- normalized boolean indicators
+- Standardized engine type labels
+- Normalized boolean indicators
 
-These choices were motivated by the structure of the problem: depreciation is nonlinear, mileage effects are not strictly linear, and engine configuration carries pricing signal that raw text fields do not expose cleanly.
+These features help capture nonlinear depreciation behavior and vehicle configuration effects.
 
-## Modeling Approach
+---
 
-The primary predictive model is a LightGBM regressor trained on tabular vehicle data.
+### 4. Modeling
 
-LightGBM was chosen because:
+The main predictive model is a LightGBM regressor trained on tabular vehicle data.
 
-- the data is structured and feature-rich
-- price relationships are nonlinear
-- categorical and numeric signals interact in complex ways
-- gradient boosting is typically strong on tabular regression tasks
+LightGBM was selected because:
 
-To keep the project honest, I did not stop at one model. I added benchmarking against simpler baselines so that performance could be interpreted in context rather than as a standalone number.
+- The dataset is structured and feature-rich
+- Price relationships are nonlinear
+- Numeric and categorical variables interact in complex ways
+- Gradient boosting performs well on tabular regression problems
 
-Included benchmark models:
+Benchmark models include:
 
-- Median Baseline
-- Linear Regression
-- Gradient Boosting
-- Random Forest
+- Median baseline
+- Linear regression
+- Gradient boosting
+- Random forest
 
-The benchmark script is [scripts/benchmark_models.py](C:/Users/Joyce/Desktop/study/used-car-depreciation-github-ready/scripts/benchmark_models.py).
+Benchmark script:
 
-## Validation Strategy
+```text
+scripts/benchmark_models.py
+```
 
-A pricing model can look strong if the split is too easy, so validation strategy matters.
-
-When listing dates were available, I used a time-based split rather than relying only on a random split. This is closer to a realistic deployment setup because it tests how well the model predicts on newer listings using older ones for training.
-
-This design choice matters because it reduces the risk of overestimating model quality through overly optimistic sampling.
+---
 
 ## Results
 
-### Historical full-run model performance
+Historical full-run model performance:
 
-- MAE: about **$1.7k**
-- RMSE: about **$2.5k**
-- R²: about **0.97**
+| Metric | Result |
+|---|---:|
+| MAE | about $1.7k |
+| RMSE | about $2.5k |
+| R² | about 0.97 |
 
-### Included sample benchmark result
+The included sample benchmark shows that tree-based models perform strongly compared with a simple median baseline, while linear regression remains useful as an interpretable reference.
 
-The benchmark results included in this repository show:
+Result files:
 
-- **Random Forest** performed best on the sample benchmark
-- **Linear Regression** remained a strong and interpretable baseline
-- **Gradient Boosting** was competitive
-- **Median Baseline** performed substantially worse
+```text
+results/metrics.json
+results/benchmarks/benchmark_results.csv
+results/error_analysis/
+```
 
-Files:
+---
 
-- [results/metrics.json](C:/Users/Joyce/Desktop/study/used-car-depreciation-github-ready/results/metrics.json)
-- [results/benchmarks/benchmark_results.csv](C:/Users/Joyce/Desktop/study/used-car-depreciation-github-ready/results/benchmarks/benchmark_results.csv)
+## Streamlit App
 
-## Error Analysis
-
-Strong overall metrics do not guarantee consistent behavior across all market segments. To make the project more realistic and useful, I added segment-level error analysis.
-
-The project evaluates error by:
-
-- make
-- body type
-- price band
-- age band
-- mileage band
-
-This makes it easier to identify where the model is more reliable and where it may need more data or better features.
-
-Files:
-
-- [results/error_analysis](C:/Users/Joyce/Desktop/study/used-car-depreciation-github-ready/results/error_analysis)
-
-## Streamlit Application
-
-The repository includes a Streamlit app that turns the project into an interactive tool rather than a static analysis artifact.
+The repository includes a Streamlit app that turns the model into an interactive valuation tool.
 
 The app supports:
 
-- project overview and context
-- interactive vehicle input
-- model-estimated resale price
-- comparison between estimated price and asking price
-- depreciation curves by mileage and age
-- comparable sample listings
-- model insight and benchmark summaries
+- Project overview
+- Vehicle input form
+- Estimated resale price
+- Asking price comparison
+- Depreciation curves by age and mileage
+- Comparable sample listings
+- Model insight and benchmark summaries
 
 App file:
 
-- [app/streamlit_app.py](C:/Users/Joyce/Desktop/study/used-car-depreciation-github-ready/app/streamlit_app.py)
+```text
+app/streamlit_app.py
+```
+
+---
 
 ## Repository Structure
 
 ```text
-used-car-depreciation-github-ready/
-|-- app/                         # Streamlit web app
-|-- data/
-|   |-- external/                # raw data placeholder
-|   |-- processed/               # processed data placeholder
-|   `-- sample/                  # sample cleaned dataset
-|-- docs/                        # case study and roadmap
-|-- models/                      # trained model bundle
-|-- reports/
-|   |-- figures/                 # EDA outputs
-|   `-- used_car_depreciation_report.pdf
-|-- results/
-|   |-- benchmarks/
-|   |-- error_analysis/
-|   `-- sample_scored/
-|-- scripts/                     # data and modeling scripts
-|-- src/used_car_project/        # reusable project utilities
-|-- INTERVIEW_GUIDE.md
-|-- PORTFOLIO_SUMMARY.md
-|-- RUN_APP.bat
-|-- requirements.txt
-`-- README.md
+Used-Car-Depreciation/
+├── app/                         # Streamlit web app
+├── data/
+│   ├── external/                # Raw data placeholder
+│   ├── processed/               # Processed data placeholder
+│   └── sample/                  # Sample cleaned dataset
+├── docs/                        # Case study and roadmap
+├── models/                      # Trained model bundle
+├── reports/
+│   ├── figures/                 # EDA figures
+│   └── used_car_depreciation_report.pdf
+├── results/
+│   ├── benchmarks/              # Benchmark results
+│   ├── error_analysis/          # Segment-level error analysis
+│   └── sample_scored/           # Scored sample outputs
+├── scripts/                     # Data, modeling, and analysis scripts
+├── src/used_car_project/        # Reusable project utilities
+├── INTERVIEW_GUIDE.md
+├── PORTFOLIO_SUMMARY.md
+├── RUN_APP.bat
+├── requirements.txt
+└── README.md
 ```
 
-## How To Run The Project
+---
 
-### 1. Install dependencies
+## How to Run
+
+### 1. Clone the repository
+
+```bash
+git clone https://github.com/zehuanyu/Used-Car-Depreciation.git
+cd Used-Car-Depreciation
+```
+
+### 2. Create environment and install dependencies
 
 ```bash
 py -m venv .venv
@@ -210,19 +254,15 @@ py -m venv .venv
 pip install -r requirements.txt
 ```
 
-### 2. Launch the web app
+### 3. Launch the Streamlit app
 
-#### Option A
-
-Double-click:
+Option A: double-click
 
 ```text
 RUN_APP.bat
 ```
 
-#### Option B
-
-Run manually:
+Option B: run manually
 
 ```bash
 py -m streamlit run app/streamlit_app.py
@@ -234,79 +274,70 @@ Then open:
 http://localhost:8501
 ```
 
-## Reproducing the Workflow
+---
 
-### Clean raw data
+## Reproduce the Workflow
+
+Clean raw data:
 
 ```bash
 py scripts/clean_cars.py --input data/external/cars.csv --output data/processed/cars_clean.parquet
 ```
 
-### Generate EDA assets
+Generate EDA assets:
 
 ```bash
 py scripts/dataset_report.py --data data/processed/cars_clean.parquet --out reports/figures
 ```
 
-### Train the main validation model
+Train the main model:
 
 ```bash
 py scripts/train_price_lgbm_from_v2.py --data data/processed/cars_clean_v2.csv --out results/artifacts
 ```
 
-### Train on all available data
-
-```bash
-py scripts/final_train_on_all.py --data data/processed/cars_clean_v2.csv --out results/artifacts_full
-```
-
-### Benchmark alternative models
+Benchmark models:
 
 ```bash
 py scripts/benchmark_models.py --data data/sample/cars_clean_v2_sample.csv --out results/benchmarks --row-cap 1500 --n-jobs 1
 ```
 
-### Score a dataset
-
-```bash
-py scripts/score_csv.py --data data/sample/cars_clean_v2_sample.csv --out results/sample_scored --segments make_name,body_type
-```
-
-### Run error analysis
+Run error analysis:
 
 ```bash
 py scripts/error_analysis.py --scored results/sample_scored/scored_all.csv --out results/error_analysis
 ```
 
+---
+
 ## Key Takeaways
 
-- Data cleaning quality mattered as much as model choice.
-- Age and mileage were the dominant depreciation drivers.
-- Vehicle configuration added meaningful secondary signal.
-- Benchmarking and grouped error analysis made the project more credible.
-- Turning the work into an app made the project easier to demonstrate and reuse.
+- Data cleaning quality was as important as model choice.
+- Vehicle age and mileage were the strongest depreciation drivers.
+- Vehicle configuration added meaningful secondary pricing signal.
+- Benchmarking made the model performance easier to interpret.
+- Segment-level error analysis helped identify where the model is more or less reliable.
+- The Streamlit app makes the project easier to demonstrate as a practical valuation tool.
 
-## Limitations
-
-- The repository includes sample data and lightweight artifacts rather than the full original raw dataset.
-- Performance can vary across market segments, especially where data is sparse.
-- Location effects and some market dynamics are not fully modeled in the current version.
+---
 
 ## Future Improvements
 
-- add SHAP-based interpretability
-- improve comparable-listing logic in the app
-- retrain on a larger curated processed dataset inside the final structure
-- extend validation with richer temporal or segment-based evaluation
-- add uncertainty estimates to predictions
+- Add SHAP-based feature interpretation
+- Improve comparable-listing logic in the Streamlit app
+- Add uncertainty estimates for predicted prices
+- Expand location-based market features
+- Retrain with a larger curated dataset
+- Add automated model evaluation reports
 
-## Additional Project Notes
+---
 
-For a shorter project pitch or interview-oriented summary, see:
+## Tech Stack
 
-- [PORTFOLIO_SUMMARY.md](C:/Users/Joyce/Desktop/study/used-car-depreciation-github-ready/PORTFOLIO_SUMMARY.md)
-- [INTERVIEW_GUIDE.md](C:/Users/Joyce/Desktop/study/used-car-depreciation-github-ready/INTERVIEW_GUIDE.md)
+Python, Pandas, LightGBM, Scikit-learn, Streamlit, Matplotlib, SQL-style EDA, Machine Learning, Data Cleaning, Regression Modeling
 
-## License
+---
 
-This project is released under the MIT License. See [LICENSE](C:/Users/Joyce/Desktop/study/used-car-depreciation-github-ready/LICENSE).
+## Author
+
+Zehuan Yu
